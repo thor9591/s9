@@ -1,0 +1,84 @@
+//s9
+//.c
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct employee
+{
+int eno,sal;
+char name[20];
+}EMP;
+int Partition(EMP a[],int lb, int ub);
+void quicksort(EMP a[],int lb,int ub);
+void quicksort(EMP a[],int lb,int ub)
+{
+int j;
+if(lb<ub)
+{
+j=Partition(a,lb,ub);
+quicksort(a,lb,j-1);
+quicksort(a,j+1,ub);
+}
+}
+int Partition(EMP a[],int lb, int ub)
+{
+int up,dn;
+EMP pivot,temp;
+up=ub;
+dn=lb+1;
+pivot=a[lb];
+do
+{
+while((a[dn].eno<pivot.eno)&&(dn<=ub))
+//while((a[dn].sal<pivot.sal)&&(dn<=ub))
+//while((strcmp(pivot.name,a[dn].name)>0)&&(dn<=ub))
+dn++;
+while((a[up].eno>pivot.eno)&&(up>lb))
+//while((a[up].sal>pivot.sal)&&(up>lb))
+//while((strcmp(a[up].name,pivot.name)>0)&&(up>lb))
+up--;
+if(dn<up)
+{
+temp=a[dn];
+a[dn]=a[up];
+a[up]=temp;
+}
+}
+while(dn<up);
+a[lb]=a[up];
+a[up]=pivot;
+return up;
+}
+void main()
+{
+FILE *fp;
+EMP e[20];
+int i,j;
+fp=fopen("employee.txt","r");
+if(fp==NULL)
+{
+printf("\n File does not exists");
+exit(0);
+}
+else
+{
+printf("\n File exists");
+i=0;
+while(!feof(fp))
+{
+fscanf(fp,"%d%s%d",&e[i].eno,e[i].name,&e[i].sal);
+i++;
+}
+for(j=0;j<i-1;j++)
+printf("\n%d\t%s\t%d",e[j].eno,e[j].name,e[j].sal);
+quicksort(e,0,i-1);
+printf("\n Sorted:");
+for(j=0;j<i-1;j++)
+printf("\n%d\t%s\t%d",e[j].eno,e[j].name,e[j].sal);
+}
+}
+
+
+
+//cc filename.h
+//cc filename.c
+//  ./a.out
